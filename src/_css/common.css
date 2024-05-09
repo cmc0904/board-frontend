@@ -672,6 +672,15 @@ body {
   vertical-align: middle;
 }
 
+/* 텍스트 라벨 */
+.txt_label {
+  padding:2px 4px;
+  font-size: 11px;
+  color: #fff;
+}
+.txt_label.notice {
+  background:#ff7300;
+}
 
 /* paging & button */
 .comm_paging_btn {
@@ -967,7 +976,6 @@ body {
 .wrap_write .write_cont {
   min-height: 400px;
   border-top: 1px solid #333;
-
 }
 .wrap_write .write_file {
   overflow: hidden;
@@ -994,6 +1002,14 @@ body {
 }
 
 /* 팝업 */
+.dimmed {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background:rgba(0, 0, 0, .5);
+}
 .comm_popup {
   display: block;
   overflow: hidden;
@@ -1096,14 +1112,6 @@ body {
 .comm_popup .list_file_inline a {
   text-decoration: underline;
   color: #0068df;
-}
-
-/* 공지 라벨 */
-.txt_label {
-  background-color: rgb(246, 132, 72);
-  padding: 5px;
-  font-family:'Malgun Gothic', 'Dotum', Helvetica, sans-serif;
-  color: white;
 }
 
 /* 에디터 (CKeditor) */
