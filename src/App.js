@@ -4,6 +4,10 @@ import BoardListView from './view/BoardListView.js';
 import BoardWriteView from './view/BoardWriteView.js';
 import BoardContentView from './view/BoardContentView.js';
 
+// 비빌글 URL 을 통한 접근 방지
+import ProtectedRouter from './route/ProtectedRouter.js';
+
+
 
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 
@@ -20,7 +24,7 @@ function App() {
           <Route path="/" element={<BoardListView />} />
 
           {/* 게시판 상세 목록 */}
-          <Route path="/board/:boardIdx" element={<BoardContentView />} />
+          <Route path="/board/:boardIdx" element={<BoardContentView/>} />
         </Routes>
       </Router>
     </>

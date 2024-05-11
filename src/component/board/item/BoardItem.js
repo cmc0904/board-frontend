@@ -18,7 +18,7 @@ function BoardItem({ item, index, getFilePopUpData, openSendEmailPopup, openChec
     <tr>
       <td>{index}</td>
       <td className="ta_l">
-        <a className="link_title" href="#!" onClick={checkIsPrivatePage}>
+        <a className="link_title" onClick={checkIsPrivatePage}>
             {item.isNotice === 1 ?
               <span className="txt_label notice">공지</span>
               :
