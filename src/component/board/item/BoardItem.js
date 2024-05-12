@@ -8,7 +8,7 @@ function BoardItem({ item, index, getFilePopUpData, openSendEmailPopup, openChec
   // 클릭한 게시판이 비공개 글인지 아닌지 확인해서 비공개글 이라면 팝업을 띄우고, 아니면 게시판 상세페이지로 이동.
   const checkIsPrivatePage = () => {
     if(item.isPrivate === 1) {
-      openCheckPasswordPopup();
+      openCheckPasswordPopup(item.boardIdx);
     } else {
       navigate(`/board/${item.boardIdx}`);
     }
@@ -31,7 +31,7 @@ function BoardItem({ item, index, getFilePopUpData, openSendEmailPopup, openChec
       </td>
       <td>
         {item.fileCount !== 0 &&
-          <a class="link_file" onClick={()=>getFilePopUpData(item.boardIdx)} href="#!">
+          <a class="link_file" onClick={()=>getFilePopUpData(item.boardIdx)}>
             <span class="ico_img flie">첨부파일</span>{item.fileCount}
           </a>
         }

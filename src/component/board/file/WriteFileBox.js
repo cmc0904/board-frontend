@@ -26,7 +26,8 @@ function WriteFileBox({fileRef, selectedFiles, setSelectedFiles}) {
             dataTransfer.items.add(file);
         });
         fileRef.current.files = dataTransfer.files;
-        setSelectedFiles(filteredFiles);    }
+        setSelectedFiles(filteredFiles);
+    }
 
     return (
         <>

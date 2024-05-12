@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import axios from "axios";
 import { Link } from "react-router-dom";
@@ -62,7 +62,8 @@ function BoardListView() {
     }
 
     // 이메일 전송 팝업 열기
-    const openCheckPasswordPopup = () => {
+    const openCheckPasswordPopup = (boardIdx) => {
+        setPrivateArticleBoardIdx(boardIdx)
         setIsPrivateArticlePopupOn(true);
     }
 
@@ -129,7 +130,7 @@ function BoardListView() {
                         ))}
 
                         {boardData.boardData && boardData.boardData.map((item, index) => (
-                            <BoardItem item={item} index={index} getFilePopUpData={getFileNameForFileListPopup} openSendEmailPopup={openSendEmailPopup} openCheckPasswordPopup={openCheckPasswordPopup}></BoardItem>
+                            <BoardItem item={item} index={boardData.count - ((currentPage - 1) * 10 + index)} getFilePopUpData={getFileNameForFileListPopup} openSendEmailPopup={openSendEmailPopup} openCheckPasswordPopup={openCheckPasswordPopup}></BoardItem>
                         ))}
 
 
@@ -191,7 +192,7 @@ function BoardListView() {
             {isPrivateArticlePopupOn &&
                 <>
                     <div class="dimmed"></div>
-                    <CheckReadPermissionPopUp closePopup={closeCheckPasswordPopup}></CheckReadPermissionPopUp>
+                    <CheckReadPermissionPopUp closePopup={closeCheckPasswordPopup} privateArticleBoardIdx={privateArticleBoardIdx} type={"READ_PRIVATE_ARTICLE"}></CheckReadPermissionPopUp>
                 </>
             }
 

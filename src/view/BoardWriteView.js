@@ -2,6 +2,7 @@ import React, { useRef, useState } from "react";
 import EditorBox from "../component/board/editor/EditorBox"; // 텍스트 Editor
 import WriteFileBox from "../component/board/file/WriteFileBox"; // 파일 업로드
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 function BoardWriteView() {
     /* 2개 하나로 합치기 */
@@ -17,10 +18,15 @@ function BoardWriteView() {
     const [isPrivate, setIsPrivate] = useState(false); // 비밀글 체크 여부
     const [content, setContent] = useState(""); // 내용
 
+    const navigate = useNavigate();
+
     const upload = async () => {
         try {
             const res = await axios.post("http://localhost:1000/api/board/postBoard", settingFormData());
-            console.log(res.data)
+
+            if(res.data.message === "UPLOAD_SUCCESSFUL") {
+                navigate("/")
+            }
         } catch(e) {
             console.log(e)
         }

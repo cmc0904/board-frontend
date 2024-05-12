@@ -10,6 +10,8 @@ import ProtectedRouter from './route/ProtectedRouter.js';
 
 
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import BoardEditView from './view/EditBoardView.js';
+import BoardReplyView from './view/BoardReplyView.js';
 
 function App() {
   return (
@@ -25,6 +27,12 @@ function App() {
 
           {/* 게시판 상세 목록 */}
           <Route path="/board/:boardIdx" element={<BoardContentView/>} />
+
+          {/* 게시판 수정 */}
+          <Route path="/board/edit/:boardIdx" element={<BoardEditView/>} />
+
+          {/* 게시판 답변 */}
+          <Route path="/board/reply/:boardIdx" element={<BoardReplyView/>} />
         </Routes>
       </Router>
     </>

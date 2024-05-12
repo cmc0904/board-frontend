@@ -3,10 +3,11 @@
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 
-function EditorBox({setEditorContents}) {
+function EditorBox({setEditorContents, value}) {
   return (
       <CKEditor
         style={{ height: "100%" }}
+        data={value}
         editor={ClassicEditor}
         config={{
           placeholder: "내용을 입력하세요.",
