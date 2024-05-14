@@ -17,16 +17,25 @@ function BoardListView() {
     const [currentPage, setCurrentPage] = useState(1);
 
     /* 파일 리스트 팝업 */
-    const [fileListPopUp, setFileListPopUp] = useState([]);
-    const [isFileListPopUpOn, setIsFileListPopUpOn] = useState(false);
+    const [fileIndex, setFileIndex] = useState();
+    const [fileListPopUp, setFileListPopUp] = useState([]); // 파일 목록
+    const [isFileListPopUpOn, setIsFileListPopUpOn] = useState(false); // 팝업이 열렸는지 
 
     /* 이메일 전송 팝업 */
-    const [sendEmailAddress, setSendEmailAddress] = useState("");
-    const [isSendEmailPopUpOn, setIsSendEmailPopUpOn] = useState(false);
+    const [sendEmailAddress, setSendEmailAddress] = useState(""); // 선택한 이메일 
+    const [isSendEmailPopUpOn, setIsSendEmailPopUpOn] = useState(false); // 이메일 팝업이 열렸는지
 
     /* 비공개글 팝업 */
-    const [privateArticleBoardIdx, setPrivateArticleBoardIdx] = useState("");
-    const [isPrivateArticlePopupOn, setIsPrivateArticlePopupOn] = useState(false);
+    const [privateArticleBoardIdx, setPrivateArticleBoardIdx] = useState(""); // 비공개 글 인덱스 번호
+    const [isPrivateArticlePopupOn, setIsPrivateArticlePopupOn] = useState(false); // 비공개 글이 열렸는지
+
+
+    // 검색
+    const [searchType, setSearchType] = useState("ALL_DATA");
+    const [content, setContent] = useState("");
+    const [startDate, setStartDate] = useState("");
+    const [endDate, setEndDate] = useState("");
+
 
     // 파일 리스트 팝업 닫기
     const closeFileListPopUp = () => {
@@ -39,11 +48,14 @@ function BoardListView() {
         try {
             const res = await axios.get(`http://localhost:1000/api/board/getFileNamesByBoardIdx?boardIdx=${boardIdx}`);
             setFileListPopUp(res.data)
+            setFileIndex(boardIdx)
             setIsFileListPopUpOn(true)
         } catch (e) {
             console.log(e)
         }
     }
+
+
 
     // 이메일 전송 팝업 닫기
     const closeEmailPopUp = () => {
@@ -56,12 +68,12 @@ function BoardListView() {
         setIsSendEmailPopUpOn(true);
     }
 
-    // 이메일 전송 팝업 닫기
+    // 비밀번호 확인 팝업 닫기
     const closeCheckPasswordPopup = () => {
         setIsPrivateArticlePopupOn(false);
     }
 
-    // 이메일 전송 팝업 열기
+    // 비밀번호 확인 팝업 열기
     const openCheckPasswordPopup = (boardIdx) => {
         setPrivateArticleBoardIdx(boardIdx)
         setIsPrivateArticlePopupOn(true);
@@ -78,13 +90,20 @@ function BoardListView() {
 
     const getBoards = async () => {
         try {
-            const res = await axios.get(`http://localhost:1000/api/board/getBoards?currentPage=${currentPage}`);
-            console.log(res.data)
-            setBoardData(res.data)
+            if(searchType === "ALL_DATA") {
+                const res = await axios.get(`http://localhost:1000/api/board/getBoards?currentPage=${currentPage}&searchType=${searchType}&content=${content}`);
+                setBoardData(res.data)
+
+            } else{
+                const res = await axios.get(`http://localhost:1000/api/board/getBoards?currentPage=${currentPage}&searchType=${searchType}&content=${content}&startDate=${startDate}&endDate=${endDate}`);
+                setBoardData(res.data)
+
+            }
         } catch (e) {
             console.log(e)
         }
     }
+    
 
     const getNotices = async () => {
         try {
@@ -95,6 +114,8 @@ function BoardListView() {
         }
     }
 
+
+    
 
     return (
         <div id="WrapContainer">
@@ -126,12 +147,28 @@ function BoardListView() {
                     </thead>
                     <tbody>
                         {notices.map((item, index) => (
-                            <BoardItem item={item} popup></BoardItem>
+                            <BoardItem key = {item.boardIdx} item={item} getFilePopUpData={getFileNameForFileListPopup} openSendEmailPopup={openSendEmailPopup} openCheckPasswordPopup={openCheckPasswordPopup} />
                         ))}
 
-                        {boardData.boardData && boardData.boardData.map((item, index) => (
-                            <BoardItem item={item} index={boardData.count - ((currentPage - 1) * 10 + index)} getFilePopUpData={getFileNameForFileListPopup} openSendEmailPopup={openSendEmailPopup} openCheckPasswordPopup={openCheckPasswordPopup}></BoardItem>
-                        ))}
+                        {
+                            boardData.count === 0 ?
+                                <tr>
+                                    <td colspan="6" className="no_data">검색 결과가 없습니다.</td>
+                                </tr>
+                            :
+                            boardData.boardData && boardData.boardData.map((item, index) => (
+                                <BoardItem 
+                                    key = {item.boardIdx}
+                                    item={item}
+                                    index={boardData.count - ((currentPage - 1) * 10 + index)}
+                                    getFilePopUpData={getFileNameForFileListPopup}
+                                    openSendEmailPopup={openSendEmailPopup}
+                                    openCheckPasswordPopup={openCheckPasswordPopup}
+                                    searchMode={boardData.type}
+                                    content={content}
+                                />
+                            ))
+                        }
 
 
                     </tbody>
@@ -139,11 +176,13 @@ function BoardListView() {
 
 
                 <div className="comm_paging_btn">
+                    {boardData.count > 10 && 
                     <PageNation
                         count={boardData.count}
                         currentPage={currentPage}
                         setCurrentPage={setCurrentPage}
                     />
+                    }
                     <div className="flo_side right">
                         <Link to="/boardWrite">
                             <button className="comm_btn_round fill">글쓰기</button>
@@ -152,37 +191,40 @@ function BoardListView() {
                 </div>
 
 
-
                 <div className="box_search">
                     등록일
-                    <input type="date" className="comm_inp_date ml_5" />
+                    <input type="date" className="comm_inp_date ml_5" value={startDate} onChange={(e)=>setStartDate(e.target.value)}/>
                     ~
-                    <input type="date" className="comm_inp_date" />
-                    <select className="comm_sel ml_10">
-                        <option>제목</option>
-                        <option>제목+내용</option>
-                        <option>작성자</option>
+                    <input type="date" className="comm_inp_date" value={endDate} onChange={(e)=>setEndDate(e.target.value)}/>
+                    <select className="comm_sel ml_10" value={searchType} onChange={(e) => setSearchType(e.target.value)}>
+                        <option>검색모드</option>
+                        <option value={"TITLE"}>제목</option>
+                        <option value={"TITLE_CONTENT"}>제목+내용</option>
+                        <option value={"WRITER"}>작성자</option>
+                        <option value={"DATE_ONLY"}>날짜로만 검색</option>
                     </select>
-                    <input type="text" className="comm_inp_text" style={{ "width": "300px%" }} />
-                    <button className="comm_btn fill">검색</button>
+                    <input type="text" className="comm_inp_text" style={{ "width": "300px%" }} value={content} onChange={(e)=>setContent(e.target.value)}/>
+                    <button className="comm_btn fill" onClick={() => {setCurrentPage(1); getBoards()}} style={{"marginLeft" : "4px"}}>검색</button>
+                    <button className="comm_btn fill" style={{"marginLeft" : "4px"}} onClick={() => {setCurrentPage(1); setSearchType("ALL_DATA"); getBoards()}}>전체글</button>
                 </div>
+                
 
             </div>
 
 
             {isFileListPopUpOn &&
                 <>
-                    <div class="dimmed"></div>
+                    <div className="dimmed"></div>
                     <AttachedFilePopup
                         closeFileListPopUp={closeFileListPopUp}
-                        boardIdx={1}
+                        boardIdx={fileIndex}
                         filesName={fileListPopUp} />
                 </>
             }
 
             {isSendEmailPopUpOn &&
                 <>
-                    <div class="dimmed"></div>
+                    <div className="dimmed"></div>
                     <SendEmailPopup
                         closeSendEmailPopup={closeEmailPopUp}
                         email={sendEmailAddress} />
@@ -191,7 +233,7 @@ function BoardListView() {
 
             {isPrivateArticlePopupOn &&
                 <>
-                    <div class="dimmed"></div>
+                    <div className="dimmed"></div>
                     <CheckReadPermissionPopUp closePopup={closeCheckPasswordPopup} privateArticleBoardIdx={privateArticleBoardIdx} type={"READ_PRIVATE_ARTICLE"}></CheckReadPermissionPopUp>
                 </>
             }

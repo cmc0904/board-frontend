@@ -9,9 +9,9 @@ import CommentDeletePopUp from "../popup/CommentDeletePopUp";
 import EditCommentPopUp from "../popup/EditCommentPopUp";
 
 
-function BoardContentView() {
+function BoardContentView({boardIdx}) {
 
-    const { boardIdx } = useParams();
+    //const { boardIdx } = useParams();
 
     const [boardData, setBoardData] = useState({});
     const [fileNameList, setFileNameList] = useState([]);
@@ -77,9 +77,17 @@ function BoardContentView() {
 
 
     useEffect(()=>{
-        getBoardData();
-        getAttachedFileNames();
-        getCommentsByBoardIdx();
+        const read = async () => {
+            try {
+                await axios.put(`http://localhost:1000/api/board/readBoard?boardIdx=${boardIdx}`);
+                getBoardData();
+                getAttachedFileNames();
+                getCommentsByBoardIdx();
+            } catch(e) {
+                console.log(e)
+            }
+        }
+        read();
         
         return() => {
             // 웹이 언마운트 될때 비공개글을 확인하기 위한 토큰 제거
@@ -129,6 +137,8 @@ function BoardContentView() {
 
             if(res.data.message === "UPLOAD_SUCCESSFUL") {
                 getCommentsByBoardIdx();
+                setContent("");
+                setPassword("");
             }
 
         } catch(e) {
@@ -136,8 +146,33 @@ function BoardContentView() {
         }
     }
 
+    const download = async (fileName) => {
+        try {
+            const response = await axios.get(`http://localhost:1000/api/board/fileDownload?fileName=${fileName}&boardIdx=${boardIdx}`,
+                {
+                    responseType: 'blob' // Blob 형식으로 데이터 받기
+                }
+            );
 
 
+            const blob = new Blob([response.data], { type: "application/octet-stream" });
+            const url = window.URL.createObjectURL(blob);
+
+            // 다운로드 링크 생성
+            const downloadLink = document.createElement('a');
+            downloadLink.href = url;
+            downloadLink.setAttribute('download', fileName);
+
+            // 링크를 body에 추가하고 클릭하여 다운로드 시작
+            document.body.appendChild(downloadLink);
+            downloadLink.click();
+
+            // 다운로드가 완료되면 링크 제거
+            document.body.removeChild(downloadLink);
+        } catch (e) {
+            console.log("MemberList" + e)
+        }
+    }
 
 
     // 비밀글이면 세션에 저장되어있는 토큰을 백엔드에서 유효성 검사 후 유효한 토큰이 아니라면 메인페이지로 이동
@@ -155,7 +190,7 @@ function BoardContentView() {
             console.log(e)
         })
     }
-    
+
 
     return (
         <div id="WrapContainer">
@@ -176,7 +211,7 @@ function BoardContentView() {
                         <dt>작성일</dt>
                         <dd>{boardData.createAt && boardData.createAt.split("T")[0]}</dd>
                         <dt>조회수</dt>
-                        <dd>30</dd>
+                        <dd>{boardData.boardView}</dd>
                     </dl>
                     <div className="view_cont">
                         {boardData.boardArticle && parse(boardData.boardArticle)}
@@ -188,7 +223,7 @@ function BoardContentView() {
                                 <strong className="tit_file"><span className="ico_img flie">첨부파일</span> 첨부파일</strong>
                                 <ul className="list_file">
                                     {fileNameList.map((item, idx) => (
-                                        <li><a href="javascript:;">{item}</a></li>
+                                        <li><a onClick={() => download(item)}>{item}</a></li>
                                     ))}
                                 </ul>
                             </div>
@@ -249,7 +284,7 @@ function BoardContentView() {
 
             {isPopUpOn &&
                 <>
-                    <div class="dimmed"></div>
+                    <div className="dimmed"></div>
                     <CheckReadPermissionPopUp closePopup={closePopUP} privateArticleBoardIdx={boardIdx} type={"DELETE_BOARD"}></CheckReadPermissionPopUp>
                 </>
             }
@@ -257,7 +292,7 @@ function BoardContentView() {
 
             {isCommentDeletePopUpOn && 
                 <>
-                    <div class="dimmed"></div>
+                    <div className="dimmed"></div>
                     <CommentDeletePopUp closePopUp={closeCommentDeletePopUp} item={commentControl} getData={getCommentsByBoardIdx}></CommentDeletePopUp>
                 </>
             }
@@ -267,14 +302,14 @@ function BoardContentView() {
             
             isCommentUpdatePopUpOn && 
                 <>
-                    <div class="dimmed"></div>
+                    <div className="dimmed"></div>
                     <EditCommentPopUp closePopUp={closeCommentUpdatePopUp} item={commentControl} getData={getCommentsByBoardIdx}></EditCommentPopUp>
                 </>
             }
 
             {isEditBoarPopUpOn &&
                 <>
-                    <div class="dimmed"></div>
+                    <div className="dimmed"></div>
                     <CheckReadPermissionPopUp closePopup={closeEditPopUpdatePopUp} privateArticleBoardIdx={boardIdx} type={"EDIT_BOARD"}></CheckReadPermissionPopUp>
                 </>
             }

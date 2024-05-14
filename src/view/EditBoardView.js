@@ -41,6 +41,11 @@ function BoardEditView() {
 
         getBoardData();
         getAttachedFileNames();
+
+        return() => {
+            // 웹이 언마운트 될때 비공개글을 확인하기 위한 토큰 제거
+            window.sessionStorage.removeItem("e_permission");
+        }
     }, [])
 
 
