@@ -9,6 +9,7 @@ import BoardItem from "../component/board/item/BoardItem";
 import AttachedFilePopup from "../popup/AttachedFileListPopup";
 import SendEmailPopup from "../popup/SendEmailPopup";
 import CheckReadPermissionPopUp from "../popup/CheckReadPermissionPopup";
+import SearchBox from "../component/search/SearchBox";
 
 function BoardListView() {
 
@@ -86,19 +87,12 @@ function BoardListView() {
 
     useEffect(() => {
         getBoards();
-    }, [currentPage])
+    }, [currentPage, content, startDate, endDate, searchType])
 
     const getBoards = async () => {
         try {
-            if(searchType === "ALL_DATA") {
-                const res = await axios.get(`http://localhost:1000/api/board/getBoards?currentPage=${currentPage}&searchType=${searchType}&content=${content}`);
-                setBoardData(res.data)
-
-            } else{
-                const res = await axios.get(`http://localhost:1000/api/board/getBoards?currentPage=${currentPage}&searchType=${searchType}&content=${content}&startDate=${startDate}&endDate=${endDate}`);
-                setBoardData(res.data)
-
-            }
+            const res = await axios.get(`http://localhost:1000/api/board/getBoards?currentPage=${currentPage}&searchType=${searchType}${!!content ? `&content=${content}` : ''}${!!startDate ? `&startDate=${startDate}`:''}${!!endDate ? `&endDate=${endDate}`:''}`);
+            setBoardData(res.data)
         } catch (e) {
             console.log(e)
         }
@@ -153,7 +147,7 @@ function BoardListView() {
                         {
                             boardData.count === 0 ?
                                 <tr>
-                                    <td colspan="6" className="no_data">검색 결과가 없습니다.</td>
+                                    <td colSpan="6" className="no_data">검색 결과가 없습니다.</td>
                                 </tr>
                             :
                             boardData.boardData && boardData.boardData.map((item, index) => (
@@ -190,23 +184,13 @@ function BoardListView() {
                     </div>
                 </div>
 
-
-                <div className="box_search">
-                    등록일
-                    <input type="date" className="comm_inp_date ml_5" value={startDate} onChange={(e)=>setStartDate(e.target.value)}/>
-                    ~
-                    <input type="date" className="comm_inp_date" value={endDate} onChange={(e)=>setEndDate(e.target.value)}/>
-                    <select className="comm_sel ml_10" value={searchType} onChange={(e) => setSearchType(e.target.value)}>
-                        <option>검색모드</option>
-                        <option value={"TITLE"}>제목</option>
-                        <option value={"TITLE_CONTENT"}>제목+내용</option>
-                        <option value={"WRITER"}>작성자</option>
-                        <option value={"DATE_ONLY"}>날짜로만 검색</option>
-                    </select>
-                    <input type="text" className="comm_inp_text" style={{ "width": "300px%" }} value={content} onChange={(e)=>setContent(e.target.value)}/>
-                    <button className="comm_btn fill" onClick={() => {setCurrentPage(1); getBoards()}} style={{"marginLeft" : "4px"}}>검색</button>
-                    <button className="comm_btn fill" style={{"marginLeft" : "4px"}} onClick={() => {setCurrentPage(1); setSearchType("ALL_DATA"); getBoards()}}>전체글</button>
-                </div>
+                <SearchBox 
+                    setContent={setContent}
+                    setCurrentPage={setCurrentPage}
+                    setEndDate={setEndDate}
+                    setStartDate={setStartDate}
+                    setSearchType={setSearchType}
+                />
                 
 
             </div>

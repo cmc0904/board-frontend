@@ -677,6 +677,7 @@ body {
   padding:2px 4px;
   font-size: 11px;
   color: #fff;
+  margin-right: 5px;
 }
 .txt_label.notice {
   background:#ff7300;

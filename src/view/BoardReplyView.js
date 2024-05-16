@@ -47,13 +47,14 @@ function BoardReplyView() {
     const settingFormData = ()=> {
         const formData = new FormData();
 
-        formData.append("title", title);
+        formData.append("title", 'ㄴ ' + title);
         formData.append("article", content);
         formData.append("writer", writer);
         formData.append("password", password);
         formData.append("email",  email);
         formData.append("isNotice", isNotice ? 1 : 0);
         formData.append("isPrivate", isPrivate ? 1 : 0);
+        formData.append("replyIdx", boardIdx);
 
         Array.from(fileRef.current.files).forEach((file) => {
             formData.append("files", file);

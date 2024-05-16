@@ -28,9 +28,7 @@ const BoardItem = ({ item, index, getFilePopUpData, openSendEmailPopup, openChec
       </td>
       <td>
         {item.fileCount !== 0 && (
-          <a className="link_file" onClick={() => getFilePopUpData(item.boardIdx)}>
-            <span className="ico_img file">첨부파일</span>{item.fileCount}
-          </a>
+          <a class="link_file" onClick={() => getFilePopUpData(item.boardIdx)}><span class="ico_img flie">첨부파일</span>{item.fileCount}</a>
         )}
       </td>
       <td><a className="link_writer" onClick={() => openSendEmailPopup(item.boardWriterEmail)}>{item.writer}</a></td>

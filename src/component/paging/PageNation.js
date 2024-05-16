@@ -9,18 +9,15 @@ function PageNation({ count, currentPage, setCurrentPage }) {
 
     useEffect(() => {
         setAllPages(Array.from({ length: Math.ceil(count / 10) }, (_, index) => index + 1));
+        setCurrentPg(1);
     }, [count]);
 
     useEffect(() => {
-        if(siganl === "UP") {
+        if(siganl === "UP_DOWN") {
             if(!!allPages.slice((currentPg - 1) * 5, currentPg * 5)[0]) {
                 setCurrentPage(allPages.slice((currentPg - 1) * 5, currentPg * 5)[0])
             }
-        } else if (siganl === "DOWN") {
-            if(!!allPages.slice((currentPg - 1) * 5, currentPg * 5)[4]) {
-                setCurrentPage(allPages.slice((currentPg - 1) * 5, currentPg * 5)[4])
-            }
-        }
+        } 
     }, [allPages, currentPg, setCurrentPage, siganl]);
 
     const clickPage = (item) => {
@@ -28,25 +25,27 @@ function PageNation({ count, currentPage, setCurrentPage }) {
     };
 
     const next = () => {
-        setSignal("UP")
+        setSignal("UP_DOWN")
         setCurrentPg(currentPg + 1);
     };
 
     const previous = () => {
-        setSignal("DOWN")
+        setSignal("UP_DOWN")
         setCurrentPg(currentPg - 1);
     };
 
     const last = () => {
-        setCurrentPg(Math.ceil(count / 10));
-        if(!!allPages.length) {
-            setCurrentPage(allPages.length);
-        }
+        setCurrentPage(allPages.length);
+        setCurrentPg(Math.ceil(Math.ceil(count / 10) / 5));
+        setSignal("LAST");
+
     };
 
     const first = () => {
         setCurrentPg(1);
         setCurrentPage(1)
+        setSignal("FIRST");
+
     };
 
     return (

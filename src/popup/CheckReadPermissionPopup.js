@@ -65,6 +65,8 @@ function CheckReadPermissionPopUp({closePopup, privateArticleBoardIdx, type}) {
                 window.alert("비밀번호가 틀렸습니다.")
             } else if(res.data.message === "BOARD_DELETED") {
                 navigate(-1);
+            }  else if (res.data.message === "DELETE_ERROR") {
+                window.alert(`답변 : ${res.data.boardErrorCount}건, 댓글 : ${res.data.commentErrorCount}건으로 삭제가 불가능합니다.`)
             }
         } catch(e) {
             console.log(e);

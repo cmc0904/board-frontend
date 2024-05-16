@@ -52,8 +52,6 @@ function BoardEditView() {
     const getAttachedFileNames = async () => {
         try {
             const res = await axios.get(`http://localhost:1000/api/board/getFileNamesByBoardIdx?boardIdx=${boardIdx}`);
-            console.log(res.data)
-
             setFiles(res.data)
         } catch(e) {
             console.log(e)
@@ -117,7 +115,7 @@ function BoardEditView() {
     }
 
     // URL 을 통한 접근 방지
-    axios.post(`http://localhost:1000/api/security/validateReadPermissionToken`,
+    axios.post(`http://localhost:1000/api/security/validateEditPermissionToken`,
         {
             ticket : window.sessionStorage.getItem("e_permission"),
             boardIdx : boardIdx
