@@ -65,9 +65,8 @@ function BoardReplyView() {
     }
 
     const clearInput = ()=> {
-        const con = window.confirm("작성된 글이 있습니다. 삭제 하시겠습니까?")
         
-        if(con) {
+        if(window.confirm("작성된 글이 있습니다. 삭제 하시겠습니까?")) {
             setTitle("");
             setWriter("");
             setPassword("");
@@ -121,7 +120,7 @@ function BoardReplyView() {
 
                 <div className="comm_paging_btn">
                     <div className="flo_side left">
-                        <button className="comm_btn_round fill">목록</button>
+                        <button className="comm_btn_round fill" onClick={clearInput}>목록</button>
                     </div>
                     <div className="flo_side right">
                         <button className="comm_btn_round" onClick={clearInput}>취소</button>
