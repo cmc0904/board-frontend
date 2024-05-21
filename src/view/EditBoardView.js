@@ -65,7 +65,7 @@ function BoardEditView() {
                 console.log(res.data)
 
                 if(res.data.message === "EDIT_SUCCESSFUL") {
-                    navigate("/")
+                    navigate(-1)
                 } else if (res.data.message === "EDIT_FAILED") {
                     window.alert("게시판을 수정하던 중 오류가 발생했습니다.")
                 }
@@ -97,9 +97,7 @@ function BoardEditView() {
     }
 
     const clearInput = ()=> {
-        const con = window.confirm("수정중인 글이 있습니다. 삭제 하시겠습니까?")
-        
-        if(con) {
+        if(window.confirm("수정중인 글이 있습니다. 삭제 하시겠습니까?")) {
             setTitle("");
             setWriter("");
             setPassword("");

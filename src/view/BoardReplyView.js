@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import EditorBox from "../component/board/editor/EditorBox"; // 텍스트 Editor
 import WriteFileBox from "../component/board/file/WriteFileBox"; // 파일 업로드
 import axios from "axios";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 function BoardReplyView() {
     /* 2개 하나로 합치기 */
@@ -10,6 +10,7 @@ function BoardReplyView() {
     const [files, setFiles] = useState([]); // 파일
     const {boardIdx} = useParams();
 
+    const navigate = useNavigate();
 
     const [title, setTitle] = useState(""); // 제목
     const [writer, setWriter] = useState(""); // 작성자
@@ -77,6 +78,7 @@ function BoardReplyView() {
             const dataTransfer = new DataTransfer();
             fileRef.current.files = dataTransfer.files
             setFiles([])
+            navigate(-1);
         }
     }
 

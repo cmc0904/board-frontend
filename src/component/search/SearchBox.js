@@ -1,12 +1,26 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 
 function SearchBox({ setCurrentPage, setSearchType, setContent, setStartDate, setEndDate }) {
+    
     const [searchTypeTemp, setSearchTypeTemp] = useState("TITLE");
     const [contentTemp, setContentTemp] = useState("");
     const [startDateTemp, setStartDateTemp] = useState("");
     const [endDateTemp, setEndDateTemp] = useState("");
-
+    
     const [isSearched, setIsSearched] = useState(false);
+    
+    let state = useSelector((state) => { return state.boardList })
+    useEffect(()=> {
+
+        setSearchTypeTemp(state.searchMode);
+        setContentTemp(state.content);
+        setStartDateTemp(state.startDate);
+        setEndDateTemp(state.endDate);
+        setIsSearched(state.searchMode !== "ALL_DATA");
+
+    }, [])
+
 
 
 

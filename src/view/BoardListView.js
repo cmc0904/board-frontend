@@ -10,12 +10,17 @@ import AttachedFilePopup from "../popup/AttachedFileListPopup";
 import SendEmailPopup from "../popup/SendEmailPopup";
 import CheckReadPermissionPopUp from "../popup/CheckReadPermissionPopup";
 import SearchBox from "../component/search/SearchBox";
+import { useDispatch, useSelector } from "react-redux";
+
+import { changeBoardList } from "../store"
 
 function BoardListView() {
+    let state = useSelector((state) => { return state.boardList })
+    let dispatch = useDispatch();
 
     const [boardData, setBoardData] = useState([])
     const [notices, setNotices] = useState([])
-    const [currentPage, setCurrentPage] = useState(1);
+    const [currentPage, setCurrentPage] = useState(state.currentPage);
 
     /* 파일 리스트 팝업 */
     const [fileIndex, setFileIndex] = useState();
@@ -32,10 +37,10 @@ function BoardListView() {
 
 
     // 검색
-    const [searchType, setSearchType] = useState("ALL_DATA");
-    const [content, setContent] = useState("");
-    const [startDate, setStartDate] = useState("");
-    const [endDate, setEndDate] = useState("");
+    const [searchType, setSearchType] = useState(state.searchMode);
+    const [content, setContent] = useState(state.content);
+    const [startDate, setStartDate] = useState(state.startDate);
+    const [endDate, setEndDate] = useState(state.endDate);
 
 
     // 파일 리스트 팝업 닫기
@@ -87,11 +92,26 @@ function BoardListView() {
 
     useEffect(() => {
         getBoards();
+
+        return() => {
+            dispatch(
+                changeBoardList(
+                    {
+                        currentPage: currentPage,
+                        content: content,
+                        startDate: startDate,
+                        endDate: endDate,
+                        searchMode: searchType
+                    }
+                )
+            )
+        }
     }, [currentPage, content, startDate, endDate, searchType])
 
     const getBoards = async () => {
         try {
             const res = await axios.get(`http://localhost:1000/api/board/getBoards?currentPage=${currentPage}&searchType=${searchType}${!!content ? `&content=${content}` : ''}${!!startDate ? `&startDate=${startDate}`:''}${!!endDate ? `&endDate=${endDate}`:''}`);
+            console.log(res.data)
             setBoardData(res.data)
         } catch (e) {
             console.log(e)
