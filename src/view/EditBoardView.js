@@ -3,11 +3,14 @@ import EditorBox from "../component/board/editor/EditorBox"; // 텍스트 Editor
 import WriteFileBox from "../component/board/file/WriteFileBox"; // 파일 업로드
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
+import EditFileBox from "../component/board/file/EditFileBox";
 
 function BoardEditView() {
     /* 2개 하나로 합치기 */
     const fileRef = useRef(); // 파일
-    const [files, setFiles] = useState([]); // 파일
+    const [files, setFiles] = useState([]); // 파일 (기존에 있던 거)
+    const [newFiles, setNewFiles] = useState([]); // 파일 (기존에 있던 거)
+
 
     const { boardIdx } = useParams();
 
@@ -93,6 +96,11 @@ function BoardEditView() {
             formData.append("files", file);
         });
 
+        Array.from(files).forEach((file) => {
+            console.log(files)
+            formData.append("beforeFiles", file);
+        });
+
         return formData;
     }
 
@@ -159,7 +167,13 @@ function BoardEditView() {
                         <EditorBox setEditorContents={setContent} value={content}></EditorBox>
                     </div>
                     <div className="write_file">
-                        <WriteFileBox fileRef={fileRef} selectedFiles={files} setSelectedFiles={setFiles}></WriteFileBox>
+                        <EditFileBox
+                            beforeFileList={files}
+                            afterFileList={newFiles}
+                            fileRef={fileRef}
+                            setAfterFileList={setNewFiles}
+                            setBeforFileList={setFiles}
+                        />
                     </div>
                 </div>
 

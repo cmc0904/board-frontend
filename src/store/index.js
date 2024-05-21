@@ -4,8 +4,8 @@ let boardList = createSlice({
     name : "boardList",
     initialState: {
         currentPage : 1,
-        searchMode: "TITLE",
-        content: "답",
+        searchMode: "ALL_DATA",
+        content: "",
         startDate: "",
         endDate:""
     },
