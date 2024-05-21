@@ -5,8 +5,9 @@ function CommentDeletePopUp({ item, closePopUp, getData }) {
     const [password, setPassword] = useState("")
 
     const deleteComment = async () => {
-        console.log(item)
         try {
+            if(password.replaceAll(" ", "").length === 0) return window.alert("비밀번호를 입력해주세요")
+
             const res = await axios.delete(
                 'http://localhost:1000/api/comment/deleteComment',
                 {

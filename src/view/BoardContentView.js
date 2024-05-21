@@ -126,6 +126,8 @@ function BoardContentView({boardIdx}) {
 
     const addComment = async () => {
         try {
+            if(!validation()) return;
+
             const res = await axios.post(`http://localhost:1000/api/comment/addComment`,
                 {
                     boardIdx : boardIdx,
@@ -170,25 +172,24 @@ function BoardContentView({boardIdx}) {
             // 다운로드가 완료되면 링크 제거
             document.body.removeChild(downloadLink);
         } catch (e) {
-            console.log("MemberList" + e)
+            console.log(e)
         }
     }
 
 
-    // 비밀글이면 세션에 저장되어있는 토큰을 백엔드에서 유효성 검사 후 유효한 토큰이 아니라면 메인페이지로 이동
-    if (boardData.isPrivate === 1) {
-        axios.post(`http://localhost:1000/api/security/validateReadPermissionToken`,
-            {
-                ticket : window.sessionStorage.getItem("r_permission"),
-                boardIdx : boardIdx
-            })
-        .then(res => {
-            if(res.data.message === "TOKEN_WRONG") {
-                return window.location.replace("/");
-            }
-        }).catch(e => {
-            console.log(e)
-        })
+    const validation = () => {
+        if (content.replaceAll(" ", "").length === 0) {
+            window.alert("댓글을 입력을 해주세요");
+            return false;
+        } else if(content.length > 300) {
+            window.alert("댓글은 최대 300자 제한입니다.");
+            return false;
+        } else if (password.replaceAll(" ", "").length === 0) {
+            window.alert("비밀번호를 입력 해주세요.");
+            return false;
+        } 
+
+        return true;
     }
 
 
@@ -273,9 +274,11 @@ function BoardContentView({boardIdx}) {
                         <button className="comm_btn_round" onClick={() => setIPopUpOn(true)}>삭제</button>
                     </div>
                     <div className="flo_side right">
-                        <Link to={`/board/reply/${boardIdx}`}>
-                            <button className="comm_btn_round fill">답글</button>
-                        </Link>
+                        {boardData.isNotice !== 1 && 
+                            <Link to={`/board/reply/${boardIdx}`}>
+                                <button className="comm_btn_round fill">답글</button>
+                            </Link>
+                        }
                         {/*<Link to = {`/board/edit/${boardIdx}`}></Link>*/}
                         <button className="comm_btn_round fill" onClick={openEditPopUpUpdatePopUp}>수정</button>
                     </div>

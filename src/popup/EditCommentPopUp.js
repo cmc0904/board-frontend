@@ -7,9 +7,7 @@ function EditCommentPopUp({ item, closePopUp, getData }) {
 
     const editComment = async () => {
         try {
-            console.log(item)
-            console.log(password);
-            console.log(content)
+            if(!validation()) return;
             
             const res = await axios.put(
                 'http://localhost:1000/api/comment/updateComment',
@@ -31,6 +29,21 @@ function EditCommentPopUp({ item, closePopUp, getData }) {
         } catch (e) {
             console.log(e);
         }
+    }
+
+    const validation = () => {
+        if(content.replaceAll(" ", "").length === 0) {
+            window.alert("댓글을 입력 해주세요.");
+            return false;
+        } else if(content.length > 300) {
+            window.alert("댓글은 300자 제한입니다.");
+            return false;
+        } else if (password.replaceAll(" ", "").length === 0) {
+            window.alert('비밀번호를 입력 해주세요.')
+            return false;
+        }
+
+        return true;
     }
 
 

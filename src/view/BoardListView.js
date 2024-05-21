@@ -112,9 +112,9 @@ function BoardListView() {
         try {
             const res = await axios.get(`http://localhost:1000/api/board/getBoards?currentPage=${currentPage}&searchType=${searchType}${!!content ? `&content=${content}` : ''}${!!startDate ? `&startDate=${startDate}`:''}${!!endDate ? `&endDate=${endDate}`:''}`);
             console.log(res.data)
-            setBoardData(res.data)
+            setBoardData(res.data);
         } catch (e) {
-            console.log(e)
+            console.log(e);
         }
     }
     
@@ -122,9 +122,9 @@ function BoardListView() {
     const getNotices = async () => {
         try {
             const res = await axios.get("http://localhost:1000/api/board/getNotice");
-            setNotices(res.data)
+            setNotices(res.data);
         } catch (e) {
-            console.log(e)
+            console.log(e);
         }
     }
 

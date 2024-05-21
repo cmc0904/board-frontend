@@ -18,7 +18,7 @@ const BoardItem = ({ item, index, getFilePopUpData, openSendEmailPopup, openChec
     <tr>
       <td>{index}</td>
       <td className="ta_l">
-        <a className="link_title" onClick={checkIsPrivatePage}>
+        <a className="link_title" onClick={checkIsPrivatePage} style={{ marginLeft: `${(item.depth - 1) * 20}px` }}>
           {item.isNotice === 1 && <span className="txt_label notice">공지</span>}
           {item.isPrivate === 1 && <span className="ico_img lock">비밀글</span>}
           {parse(highlightContent(item.boardTitle))}

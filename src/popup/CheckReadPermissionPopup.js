@@ -77,6 +77,8 @@ function CheckReadPermissionPopUp({closePopup, privateArticleBoardIdx, type}) {
 
     // 비밀번호를 확인해서 어떠한 기능?이 실행되는게 한 두개가 아니기에 타입에 따라서 분기적으로 처리
     const buttonHandler = ()=> {
+        if(password.replaceAll(" ", "").length === 0) return window.alert("비밀번호를 입력해주세요")
+
         if(type === "READ_PRIVATE_ARTICLE") {
             checkPassword()
         } else if(type === "DELETE_BOARD") {

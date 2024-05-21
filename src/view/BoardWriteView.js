@@ -22,6 +22,10 @@ function BoardWriteView() {
 
     const upload = async () => {
         try {
+            if(!validation()) {
+                return;
+            }
+
             const res = await axios.post("http://localhost:1000/api/board/postBoard", settingFormData());
 
             if(res.data.message === "UPLOAD_SUCCESSFUL") {
@@ -64,7 +68,29 @@ function BoardWriteView() {
             const dataTransfer = new DataTransfer();
             fileRef.current.files = dataTransfer.files
             setFiles([])
+            navigate(-1);
         }
+    }
+
+    const validation = () => {
+        if (title.replaceAll(" ", "").length === 0) {
+            window.alert("제목을 입력을 해주세요");
+            return false;
+        } else if (writer.replaceAll(" ", "").length === 0) {
+            window.alert("글쓴이를 입력 해주세요.");
+            return false;
+        } else if (password.replaceAll(" ", "").length === 0) {
+            window.alert("비밀번호를 입력 해주세요.");
+            return false;
+        } else if (!email.match(/^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i)) {
+            window.alert("이메일을 확인 해주세요.");
+            return false;
+        } else if (content.replaceAll(" ", "").length === 0) {
+            window.alert("본문 내용을 입력 해주세요.");
+            return false;
+        } 
+
+        return true;
     }
 
     return (
@@ -106,7 +132,7 @@ function BoardWriteView() {
 
                 <div className="comm_paging_btn">
                     <div className="flo_side left">
-                        <button className="comm_btn_round fill">목록</button>
+                        <button className="comm_btn_round fill" onClick={clearInput}>목록</button>
                     </div>
                     <div className="flo_side right">
                         <button className="comm_btn_round" onClick={clearInput}>취소</button>

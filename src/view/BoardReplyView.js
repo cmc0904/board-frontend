@@ -38,11 +38,38 @@ function BoardReplyView() {
 
     const upload = async () => {
         try {
+            if(!validation()) return;
+
             const res = await axios.post("http://localhost:1000/api/board/postBoard", settingFormData());
-            console.log(res.data)
+
+            if(res.data.message === "UPLOAD_SUCCESSFUL") {
+                navigate(-1)
+            }
         } catch(e) {
             console.log(e)
         }
+    }
+
+
+    const validation = () => {
+        if (title.replaceAll(" ", "").length === 0) {
+            window.alert("제목을 입력을 해주세요");
+            return false;
+        } else if (writer.replaceAll(" ", "").length === 0) {
+            window.alert("글쓴이를 입력 해주세요.");
+            return false;
+        } else if (password.replaceAll(" ", "").length === 0) {
+            window.alert("비밀번호를 입력 해주세요.");
+            return false;
+        } else if (!email.match(/^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i)) {
+            window.alert("이메일을 확인 해주세요.");
+            return false;
+        } else if (content.replaceAll(" ", "").length === 0) {
+            window.alert("본문 내용을 입력 해주세요.");
+            return false;
+        } 
+
+        return true;
     }
 
     const settingFormData = ()=> {
@@ -104,8 +131,8 @@ function BoardReplyView() {
                         </dl>
 
                         <dl className="side">
-                            <dt>공지사항</dt>
-                            <dd><label className="comm_swich"><input type="checkbox" checked={isNotice} onChange={(e) => setIsNotice(e.target.checked)} /><span className="ico_txt" /></label> </dd>
+                            {/* <dt>공지사항</dt>
+                            <dd><label className="comm_swich"><input type="checkbox" checked={isNotice} onChange={(e) => setIsNotice(e.target.checked)} /><span className="ico_txt" /></label> </dd> */}
                             <dt>비밀글</dt>
                             <dd><label className="comm_swich"><input type="checkbox" checked={isPrivate} onChange={(e) => setIsPrivate(e.target.checked)} /><span className="ico_txt" /></label> </dd>
                         </dl>

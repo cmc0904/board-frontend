@@ -63,18 +63,16 @@ function BoardEditView() {
 
     const edit = async () => {
         try {
-            try {
-                const res = await axios.put("http://localhost:1000/api/board/editBoard", settingFormData());
-                console.log(res.data)
+            if(!validation()) return;
+            
+            const res = await axios.put("http://localhost:1000/api/board/editBoard", settingFormData());
 
-                if(res.data.message === "EDIT_SUCCESSFUL") {
-                    navigate(-1)
-                } else if (res.data.message === "EDIT_FAILED") {
-                    window.alert("게시판을 수정하던 중 오류가 발생했습니다.")
-                }
-            } catch(e) {
-                console.log(e)
+            if(res.data.message === "EDIT_SUCCESSFUL") {
+                navigate(-1)
+            } else if (res.data.message === "EDIT_FAILED") {
+                window.alert("게시판을 수정하던 중 오류가 발생했습니다.")
             }
+
         } catch(e) {
             console.log(e)
         }
@@ -119,6 +117,28 @@ function BoardEditView() {
             navigate(-1)
         }
     }
+
+    const validation = () => {
+        if (title.replaceAll(" ", "").length === 0) {
+            window.alert("제목을 입력을 해주세요");
+            return false;
+        } else if (writer.replaceAll(" ", "").length === 0) {
+            window.alert("글쓴이를 입력 해주세요.");
+            return false;
+        } else if (password.replaceAll(" ", "").length === 0) {
+            window.alert("비밀번호를 입력 해주세요.");
+            return false;
+        } else if (!email.match(/^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i)) {
+            window.alert("이메일을 확인 해주세요.");
+            return false;
+        } else if (content.replaceAll(" ", "").length === 0) {
+            window.alert("본문 내용을 입력 해주세요.");
+            return false;
+        } 
+
+        return true;
+    }
+    
 
     // URL 을 통한 접근 방지
     axios.post(`http://localhost:1000/api/security/validateEditPermissionToken`,
