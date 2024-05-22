@@ -5,13 +5,13 @@ import { useEffect } from "react";
 function EditFileBox({fileRef, beforeFileList, setBeforFileList, afterFileList, setAfterFileList}) {
 
     // HTML에서 기본적으로 제공하는 레이아웃 중 input type=file 옆에 몇개 파일 선택됨 이걸 바꿈
-    useEffect(()=> {
-        const dataTransfer = new DataTransfer();
-        Array.from(fileRef.current.files).forEach(file => {
-            dataTransfer.items.add(file);
-        });
-        fileRef.current.files = dataTransfer.files;
-    }, [fileRef])
+    // useEffect(()=> {
+    //     const dataTransfer = new DataTransfer();
+    //     Array.from(fileRef.current.files).forEach(file => {
+    //         dataTransfer.items.add(file);
+    //     });
+    //     fileRef.current.files = dataTransfer.files;
+    // }, [fileRef])
 
     
     // 선택된 파일을 담고 있는 배열에서 파일 객체 제거

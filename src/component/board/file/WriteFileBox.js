@@ -1,6 +1,5 @@
 // import logo from './logo.svg';
 
-import { useEffect } from "react";
 
 function WriteFileBox({fileRef, selectedFiles, setSelectedFiles}) {
 

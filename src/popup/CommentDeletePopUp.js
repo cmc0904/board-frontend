@@ -18,7 +18,6 @@ function CommentDeletePopUp({ item, closePopUp, getData }) {
                 }
             );
     
-            console.log(res.data);
 
             if(res.data.message === "PASSWORD_WRONG") {
                 window.alert("비밀번호가 틀렸습니다.")

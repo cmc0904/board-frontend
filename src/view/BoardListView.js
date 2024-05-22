@@ -111,7 +111,6 @@ function BoardListView() {
     const getBoards = async () => {
         try {
             const res = await axios.get(`http://localhost:1000/api/board/getBoards?currentPage=${currentPage}&searchType=${searchType}${!!content ? `&content=${content}` : ''}${!!startDate ? `&startDate=${startDate}`:''}${!!endDate ? `&endDate=${endDate}`:''}`);
-            console.log(res.data)
             setBoardData(res.data);
         } catch (e) {
             console.log(e);

@@ -1,6 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
 import EditorBox from "../component/board/editor/EditorBox"; // 텍스트 Editor
-import WriteFileBox from "../component/board/file/WriteFileBox"; // 파일 업로드
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
 import EditFileBox from "../component/board/file/EditFileBox";
@@ -29,7 +28,6 @@ function BoardEditView() {
         const getBoardData = async () => {
             try {
                 const res = await axios.get(`http://localhost:1000/api/board/getBoardByBoardIdx?boardIdx=${boardIdx}`);
-                console.log(res.data)
                 setIndex(res.data.boardIdx)
                 setTitle(res.data.boardTitle);
                 setContent(res.data.boardArticle);
@@ -95,7 +93,6 @@ function BoardEditView() {
         });
 
         Array.from(files).forEach((file) => {
-            console.log(files)
             formData.append("beforeFiles", file);
         });
 

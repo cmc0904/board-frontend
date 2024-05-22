@@ -23,7 +23,6 @@ function CheckReadPermissionPopUp({closePopup, privateArticleBoardIdx, type}) {
             window.alert("비밀번호가 틀렸습니다.")
         }
 
-        console.log(res.data);
 
     }
 
@@ -43,7 +42,6 @@ function CheckReadPermissionPopUp({closePopup, privateArticleBoardIdx, type}) {
             window.alert("비밀번호가 틀렸습니다.")
         }
 
-        console.log(res.data);
 
     }
 
@@ -59,7 +57,6 @@ function CheckReadPermissionPopUp({closePopup, privateArticleBoardIdx, type}) {
                 }
             );
     
-            console.log(res.data);
 
             if(res.data.message === "PASSWORD_WRONG") {
                 window.alert("비밀번호가 틀렸습니다.")

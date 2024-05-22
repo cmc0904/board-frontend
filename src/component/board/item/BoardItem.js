@@ -18,7 +18,7 @@ const BoardItem = ({ item, index, getFilePopUpData, openSendEmailPopup, openChec
     <tr>
       <td>{index}</td>
       <td className="ta_l">
-        <a className="link_title" onClick={checkIsPrivatePage} style={{ marginLeft: `${(item.depth - 1) * 20}px` }}>
+        <a className="link_title" onClick={checkIsPrivatePage} style={{ marginLeft: `${(item.depth - 1) * 10}px` }}>
           {item.isNotice === 1 && <span className="txt_label notice">공지</span>}
           {item.isPrivate === 1 && <span className="ico_img lock">비밀글</span>}
           {parse(highlightContent(item.boardTitle))}
@@ -28,7 +28,7 @@ const BoardItem = ({ item, index, getFilePopUpData, openSendEmailPopup, openChec
       </td>
       <td>
         {item.fileCount !== 0 && (
-          <a class="link_file" onClick={() => getFilePopUpData(item.boardIdx)}><span class="ico_img flie">첨부파일</span>{item.fileCount}</a>
+          <a class="link_file" onClick={() => getFilePopUpData(item.boardIdx)}><span className="ico_img flie">첨부파일</span>{item.fileCount}</a>
         )}
       </td>
       <td><a className="link_writer" onClick={() => openSendEmailPopup(item.boardWriterEmail)}>{item.writer}</a></td>

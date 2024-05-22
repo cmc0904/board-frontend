@@ -11,6 +11,8 @@ function SearchBox({ setCurrentPage, setSearchType, setContent, setStartDate, se
     const [isSearched, setIsSearched] = useState(false);
     
     let state = useSelector((state) => { return state.boardList })
+
+    // 이전 페이지로 이동을 했을때 전에 검색했던 검색 모드, 검색 내용 등을 state 에 초기화
     useEffect(()=> {
 
         setSearchTypeTemp(state.searchMode);
