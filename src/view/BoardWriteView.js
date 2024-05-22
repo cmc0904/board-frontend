@@ -26,7 +26,7 @@ function BoardWriteView() {
                 return;
             }
 
-            const res = await axios.post("http://localhost:1000/api/board/postBoard", settingFormData());
+            const res = await axios.post("/api/board/postBoard", settingFormData());
 
             if(res.data.message === "UPLOAD_SUCCESSFUL") {
                 navigate("/")

@@ -79,7 +79,7 @@ function BoardContentView({boardIdx}) {
     useEffect(()=>{
         const read = async () => {
             try {
-                await axios.put(`http://localhost:1000/api/board/readBoard?boardIdx=${boardIdx}`);
+                await axios.put(`/api/board/readBoard?boardIdx=${boardIdx}`);
                 getBoardData();
                 getAttachedFileNames();
                 getCommentsByBoardIdx();
@@ -97,7 +97,7 @@ function BoardContentView({boardIdx}) {
 
     const getBoardData = async () => {
         try {
-            const res = await axios.get(`http://localhost:1000/api/board/getBoardByBoardIdx?boardIdx=${boardIdx}`);
+            const res = await axios.get(`/api/board/getBoardByBoardIdx?boardIdx=${boardIdx}`);
             setBoardData(res.data);
         } catch(e) {
             console.log(e)
@@ -106,7 +106,7 @@ function BoardContentView({boardIdx}) {
 
     const getAttachedFileNames = async () => {
         try {
-            const res = await axios.get(`http://localhost:1000/api/board/getFileNamesByBoardIdx?boardIdx=${boardIdx}`);
+            const res = await axios.get(`/api/board/getFileNamesByBoardIdx?boardIdx=${boardIdx}`);
             setFileNameList(res.data);
         } catch(e) {
             console.log(e)
@@ -116,7 +116,7 @@ function BoardContentView({boardIdx}) {
 
     const getCommentsByBoardIdx = async () => {
         try {
-            const res = await axios.get(`http://localhost:1000/api/comment/getCommentByBoardIdx?boardIdx=${boardIdx}`);
+            const res = await axios.get(`/api/comment/getCommentByBoardIdx?boardIdx=${boardIdx}`);
             setComments(res.data);
         } catch(e) {
             console.log(e)
@@ -128,7 +128,7 @@ function BoardContentView({boardIdx}) {
         try {
             if(!validation()) return;
 
-            const res = await axios.post(`http://localhost:1000/api/comment/addComment`,
+            const res = await axios.post(`/api/comment/addComment`,
                 {
                     boardIdx : boardIdx,
                     content : content,
@@ -150,7 +150,7 @@ function BoardContentView({boardIdx}) {
 
     const download = async (fileName) => {
         try {
-            const response = await axios.get(`http://localhost:1000/api/board/fileDownload?fileName=${fileName}&boardIdx=${boardIdx}`,
+            const response = await axios.get(`/api/board/fileDownload?fileName=${fileName}&boardIdx=${boardIdx}`,
                 {
                     responseType: 'blob' // Blob 형식으로 데이터 받기
                 }

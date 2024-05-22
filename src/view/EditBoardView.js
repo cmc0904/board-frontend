@@ -27,7 +27,7 @@ function BoardEditView() {
     useEffect(()=> {
         const getBoardData = async () => {
             try {
-                const res = await axios.get(`http://localhost:1000/api/board/getBoardByBoardIdx?boardIdx=${boardIdx}`);
+                const res = await axios.get(`/api/board/getBoardByBoardIdx?boardIdx=${boardIdx}`);
                 setIndex(res.data.boardIdx)
                 setTitle(res.data.boardTitle);
                 setContent(res.data.boardArticle);
@@ -52,7 +52,7 @@ function BoardEditView() {
 
     const getAttachedFileNames = async () => {
         try {
-            const res = await axios.get(`http://localhost:1000/api/board/getFileNamesByBoardIdx?boardIdx=${boardIdx}`);
+            const res = await axios.get(`/api/board/getFileNamesByBoardIdx?boardIdx=${boardIdx}`);
             setFiles(res.data)
         } catch(e) {
             console.log(e)
@@ -63,7 +63,7 @@ function BoardEditView() {
         try {
             if(!validation()) return;
             
-            const res = await axios.put("http://localhost:1000/api/board/editBoard", settingFormData());
+            const res = await axios.put("/api/board/editBoard", settingFormData());
 
             if(res.data.message === "EDIT_SUCCESSFUL") {
                 navigate(-1)
@@ -138,7 +138,7 @@ function BoardEditView() {
     
 
     // URL 을 통한 접근 방지
-    axios.post(`http://localhost:1000/api/security/validateEditPermissionToken`,
+    axios.post(`/api/security/validateEditPermissionToken`,
         {
             ticket : window.sessionStorage.getItem("e_permission"),
             boardIdx : boardIdx

@@ -52,7 +52,7 @@ function BoardListView() {
     // 파일 리스트 팝업 열기
     const getFileNameForFileListPopup = async (boardIdx) => {
         try {
-            const res = await axios.get(`http://localhost:1000/api/board/getFileNamesByBoardIdx?boardIdx=${boardIdx}`);
+            const res = await axios.get(`/api/board/getFileNamesByBoardIdx?boardIdx=${boardIdx}`);
             setFileListPopUp(res.data)
             setFileIndex(boardIdx)
             setIsFileListPopUpOn(true)
@@ -110,7 +110,7 @@ function BoardListView() {
 
     const getBoards = async () => {
         try {
-            const res = await axios.get(`http://localhost:1000/api/board/getBoards?currentPage=${currentPage}&searchType=${searchType}${!!content ? `&content=${content}` : ''}${!!startDate ? `&startDate=${startDate}`:''}${!!endDate ? `&endDate=${endDate}`:''}`);
+            const res = await axios.get(`/api/board/getBoards?currentPage=${currentPage}&searchType=${searchType}${!!content ? `&content=${content}` : ''}${!!startDate ? `&startDate=${startDate}`:''}${!!endDate ? `&endDate=${endDate}`:''}`);
             setBoardData(res.data);
         } catch (e) {
             console.log(e);
@@ -120,7 +120,7 @@ function BoardListView() {
 
     const getNotices = async () => {
         try {
-            const res = await axios.get("http://localhost:1000/api/board/getNotice");
+            const res = await axios.get("/api/board/getNotice");
             setNotices(res.data);
         } catch (e) {
             console.log(e);

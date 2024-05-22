@@ -10,7 +10,7 @@ function EditCommentPopUp({ item, closePopUp, getData }) {
             if(!validation()) return;
             
             const res = await axios.put(
-                'http://localhost:1000/api/comment/updateComment',
+                '/api/comment/updateComment',
                 {
                     commentIdx: item.idx,
                     password: password,

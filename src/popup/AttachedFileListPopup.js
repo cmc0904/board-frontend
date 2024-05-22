@@ -9,7 +9,7 @@ function AttachedFilePopup({filesName, boardIdx, closeFileListPopUp}) {
   useEffect(()=>{
     const getBoardData = async () => {
       try {
-          const res = await axios.get(`http://localhost:1000/api/board/getBoardByBoardIdx?boardIdx=${boardIdx}`);
+          const res = await axios.get(`/api/board/getBoardByBoardIdx?boardIdx=${boardIdx}`);
           setNeedPassword(res.data.isPrivate === 1);
       } catch(e) {
           console.log(e)
@@ -22,7 +22,7 @@ function AttachedFilePopup({filesName, boardIdx, closeFileListPopUp}) {
 
   const download = async (fileName) => {
     try {
-        const response = await axios.get(`http://localhost:1000/api/board/fileDownload?fileName=${fileName}&boardIdx=${boardIdx}`,
+        const response = await axios.get(`/api/board/fileDownload?fileName=${fileName}&boardIdx=${boardIdx}`,
             {
                 responseType: 'blob' // Blob 형식으로 데이터 받기
             }
@@ -50,7 +50,7 @@ function AttachedFilePopup({filesName, boardIdx, closeFileListPopUp}) {
 
     const checkDownloadPermission = async () => {
       try {
-        const res = await axios.post("http://localhost:1000/api/security/generateReadPermissionToken", {
+        const res = await axios.post("/api/security/generateReadPermissionToken", {
           boardIdx : boardIdx,
           password : password
         });

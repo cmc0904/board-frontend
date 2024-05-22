@@ -24,7 +24,7 @@ function BoardReplyView() {
     useEffect(() => {
         const getBoardData = async () => {
             try {
-                const res = await axios.get(`http://localhost:1000/api/board/getBoardByBoardIdx?boardIdx=${boardIdx}`);
+                const res = await axios.get(`/api/board/getBoardByBoardIdx?boardIdx=${boardIdx}`);
                 setTitle("답변 : " + res.data.boardTitle);
                 setIsPrivate(res.data.isPrivate === 1)
                 setContent("-------------------------------------------------------------------------------------------------------------------------------<br/>" + res.data.boardArticle);
@@ -40,7 +40,7 @@ function BoardReplyView() {
         try {
             if(!validation()) return;
 
-            const res = await axios.post("http://localhost:1000/api/board/postBoard", settingFormData());
+            const res = await axios.post("/api/board/postBoard", settingFormData());
 
             if(res.data.message === "UPLOAD_SUCCESSFUL") {
                 navigate(-1)

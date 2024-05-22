@@ -13,7 +13,7 @@ function BoardContentViewProtectedRouter() {
     useEffect(() => {
         const validateReadPermission = async () => {
             try {
-                const res = await axios.post("http://localhost:1000/api/security/validateReadPermissionToken", {
+                const res = await axios.post("/api/security/validateReadPermissionToken", {
                     ticket: window.sessionStorage.getItem("r_permission"),
                     boardIdx: boardIdx
                 });

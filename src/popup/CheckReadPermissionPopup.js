@@ -9,7 +9,7 @@ function CheckReadPermissionPopUp({closePopup, privateArticleBoardIdx, type}) {
     const navigate = useNavigate();
 
     const checkPassword = async ()=> {
-        const res = await axios.post("http://localhost:1000/api/security/generateReadPermissionToken", {
+        const res = await axios.post("/api/security/generateReadPermissionToken", {
             boardIdx : privateArticleBoardIdx,
             password : password
         });
@@ -28,7 +28,7 @@ function CheckReadPermissionPopUp({closePopup, privateArticleBoardIdx, type}) {
 
 
     const checkBoardEditPassword = async ()=> {
-        const res = await axios.post("http://localhost:1000/api/security/generateReadPermissionToken", {
+        const res = await axios.post("/api/security/generateReadPermissionToken", {
             boardIdx : privateArticleBoardIdx,
             password : password
         });
@@ -48,7 +48,7 @@ function CheckReadPermissionPopUp({closePopup, privateArticleBoardIdx, type}) {
     const deleteBoard = async () => {
         try {
             const res = await axios.delete(
-                'http://localhost:1000/api/board/deleteBoard',
+                '/api/board/deleteBoard',
                 {
                     data: {
                         boardIdx: privateArticleBoardIdx,

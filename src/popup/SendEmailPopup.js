@@ -30,7 +30,7 @@ function SendEmailPopup({ closeSendEmailPopup, email }) {
     try {
       if (!validation()) return;
 
-      const res = await axios.post("http://localhost:1000/api/mail/sendMail", settingFormData())
+      const res = await axios.post("/api/mail/sendMail", settingFormData())
       if (res.data.message === "SENDED_EMAIL") {
         closeSendEmailPopup();
       } else if (res.data.message === "SENDING_EMAIL_ERROR") {
