@@ -40,7 +40,7 @@ function SearchBox({ setCurrentPage, setSearchType, setContent, setStartDate, se
         setSearchType("ALL_DATA");
         setContent("");
         setStartDate("");
-        setEndDate("");;
+        setEndDate("");
         setIsSearched(false)
     }
 

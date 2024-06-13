@@ -61,8 +61,6 @@ function BoardListView() {
         }
     }
 
-
-
     // 이메일 전송 팝업 닫기
     const closeEmailPopUp = () => {
         setIsSendEmailPopUpOn(false);
@@ -111,12 +109,12 @@ function BoardListView() {
     const getBoards = async () => {
         try {
             const res = await axios.get(`/api/board/getBoards?currentPage=${currentPage}&searchType=${searchType}${!!content ? `&content=${content}` : ''}${!!startDate ? `&startDate=${startDate}`:''}${!!endDate ? `&endDate=${endDate}`:''}`);
+            console.log(res.data)
             setBoardData(res.data);
         } catch (e) {
             console.log(e);
         }
     }
-    
 
     const getNotices = async () => {
         try {
